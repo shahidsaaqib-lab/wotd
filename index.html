@@ -164,7 +164,6 @@
       letter-spacing: 1px;
     }
 
-    /* Active Input Highlight */
     .active-box {
       border-color: var(--primary-gold) !important;
       box-shadow: 0 0 0 2px var(--gold-glow) !important;
@@ -438,7 +437,7 @@
 
       for (let i = 0; i < len; i++) {
         greenGrid.appendChild(createBox('green-box', i, 1));
-        yellowGrid.appendChild(createBox('yellow-box', i, 5));
+        yellowGrid.appendChild(createBox('yellow-box', i, 1));
       }
       setActiveInput(document.getElementById('grey'));
     }
@@ -506,19 +505,12 @@
       const el = currentActiveInput;
 
       if (el.classList.contains('letter-box')) {
-        const maxLen = parseInt(el.maxLength, 10);
-        if (maxLen === 1) { // Green Box
-          el.value = char;
-          const next = el.nextElementSibling;
-          if (next) {
-            setActiveInput(next);
-          }
-        } else { // Yellow Box
-          if (el.value.length < maxLen && !el.value.includes(char)) {
-            el.value += char;
-          }
+        el.value = char;
+        const next = el.nextElementSibling;
+        if (next) {
+          setActiveInput(next);
         }
-      } else if (el.id === 'grey') { // Grey Box
+      } else if (el.id === 'grey') {
         let raw = el.value.toUpperCase().replace(/[^A-Z]/g, '');
         let letters = new Set(raw.split('').filter(Boolean));
         letters.add(char);
@@ -535,12 +527,12 @@
 
       if (el.classList.contains('letter-box')) {
         if (el.value.length > 0) {
-          el.value = el.value.slice(0, -1);
+          el.value = '';
         } else {
           const prev = el.previousElementSibling;
           if (prev) {
             setActiveInput(prev);
-            prev.value = prev.value.slice(0, -1);
+            prev.value = '';
           }
         }
       } else if (el.id === 'grey') {
